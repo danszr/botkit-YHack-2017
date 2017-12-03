@@ -6,63 +6,19 @@ var controller = Botkit.slackbot();
 //Set up a simple webserver so that Botkit can receive incoming messages via webhook.
 
 controller.hears('hello','direct_mention,direct_message', function(bot, message) {
-  bot.reply(message, {
-    attachments:[
-      {
-        title: 'Hello! Please sign the <http://guilfordfreelibrary.org/wp-content/uploads/2017/08/MakeHaven-Guest-Waiver-and-Release.pdf| waiver> to get stated with MakeHaven!',
-        callback_id:'123',
-        attachment_type: 'default',
-        actions: [
-           {
-              'name':'Done',
-              'text': 'Done',
-              'value': 'Done',
-              'type': 'button',
-           }
-        ]
-      }
-    ]
-  });
+  bot.reply(message, 'Hello! Please sign the <http://guilfordfreelibrary.org/wp-content/uploads/2017/08/MakeHaven-Guest-Waiver-and-Release.pdf| waiver> to get started with MakeHaven! Type \'Signed\' when done.');
 });
 
-// receive an interactive message, and reply with a message that will replace the original
-controller.on('interactive_message_callback', function(bot, message) {
-
-    // check message.actions and message.callback_id to see what action to take...
-
-    bot.replyInteractive(message, {
-        text: '...',
-        attachments: [
-            {
-                title: 'My buttons',
-                callback_id: '123',
-                attachment_type: 'default',
-                actions: [
-                    {
-                        "name":"yes",
-                        "text": "Yes!",
-                        "value": "yes",
-                        "type": "button",
-                    },
-                    {
-                       "text": "No!",
-                        "name": "no",
-                        "value": "delete",
-                        "style": "danger",
-                        "type": "button",
-                        "confirm": {
-                          "title": "Are you sure?",
-                          "text": "This will do something!",
-                          "ok_text": "Yes",
-                          "dismiss_text": "No"
-                        }
-                    }
-                ]
-            }
-        ]
-    });
-
+controller.hears('signed','direct_mention,direct_message', function(bot, message) {
+  bot.reply(message, 'Please watch the <https://www.youtube.com/watch?v=jzfBKj4DEHo| new member orientation video>. Type \'Done Watching \' when done.');
 });
+
+controller.hears('done watching','direct_mention,direct_message', function(bot, message) {
+  bot.reply(message, 'Please schedule a to pickup your key');
+});
+
+
+
 var bot = controller.spawn({
   token:require('./config').token
 });
